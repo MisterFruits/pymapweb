@@ -32,7 +32,7 @@
   <body role="document">
 
     <!-- Fixed navbar -->
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -420,64 +420,71 @@
 
 
 
-      <div class="page-header">
-        <h1>Panels</h1>
-      </div>
       <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-12">
           <div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">Panel title</h3>
             </div>
             <div class="panel-body">
-              Panel content
             </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Username</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Mark</td>
+                  <td>Otto</td>
+                  <td>@mdo</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Jacob</td>
+                  <td>Thornton</td>
+                  <td>@fat</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Larry</td>
+                  <td>the Bird</td>
+                  <td>@twitter</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="panel panel-primary">
+        </div><!-- /.col-sm-12 -->
+      </div>
+
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">Panel title</h3>
             </div>
-            <div class="panel-body">
-              Panel content
+            <div class="list-group">
+              <a href="#" class="list-group-item active">
+                <h4 class="list-group-item-heading">List group item heading</h4>
+                <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+              </a>
+              <a href="#" class="list-group-item">
+                <h4 class="list-group-item-heading">List group item heading</h4>
+                <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+              </a>
+              <a href="#" class="list-group-item">
+                <h4 class="list-group-item-heading">List group item heading</h4>
+                <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+              </a>
             </div>
           </div>
-        </div><!-- /.col-sm-4 -->
-        <div class="col-sm-4">
-          <div class="panel panel-success">
-            <div class="panel-heading">
-              <h3 class="panel-title">Panel title</h3>
-            </div>
-            <div class="panel-body">
-              Panel content
-            </div>
-          </div>
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">Panel title</h3>
-            </div>
-            <div class="panel-body">
-              Panel content
-            </div>
-          </div>
-        </div><!-- /.col-sm-4 -->
-        <div class="col-sm-4">
-          <div class="panel panel-warning">
-            <div class="panel-heading">
-              <h3 class="panel-title">Panel title</h3>
-            </div>
-            <div class="panel-body">
-              Panel content
-            </div>
-          </div>
-          <div class="panel panel-danger">
-            <div class="panel-heading">
-              <h3 class="panel-title">Panel title</h3>
-            </div>
-            <div class="panel-body">
-              Panel content
-            </div>
-          </div>
-        </div><!-- /.col-sm-4 -->
+        </div><!-- /.col-sm-12 -->
       </div>
 
     </div> <!-- /container -->
