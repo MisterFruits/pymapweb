@@ -18,7 +18,7 @@ def test(name = ''):
     return dict()
 
 @app.route('/test2')
-@view('test2')
+@view('main')
 def test2(name = ''):
     return dict()
 
