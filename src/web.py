@@ -14,7 +14,7 @@ def server_static(filepath):
 @app.route('/')
 @app.route('/:username/:account')
 @view('main')
-def test(username = '', account = ''):
+def main(username = '', account = ''):
     context = dict()
     context['accounts'] = [pymap.get_random_account() for el in range(4)]
     return context
