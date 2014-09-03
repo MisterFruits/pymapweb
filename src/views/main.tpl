@@ -67,26 +67,13 @@
 
       <div class="col-md-3">
         <ul class="list-group">
-          <li class="list-group-item">
-            <span class="badge">14</span>
-            Cras justo odio
+          % for index, account in enumerate(accounts):
+          % active = " active" if account == selectedaccount else ""
+          <li class="list-group-item{{active}}">
+            <span class="badge">{{len(account.mails)}}</span>
+            {{account.name}}
           </li>
-          <li class="list-group-item active">
-            <span class="badge">56</span>
-            Cras justo odio
-          </li>
-          <li class="list-group-item">
-            <span class="badge">0</span>
-            Cras justo odio
-          </li>
-          <li class="list-group-item">
-            <span class="badge">4</span>
-            Cras justo odio
-          </li>
-          <li class="list-group-item">
-            <span class="badge">1</span>
-            Cras justo odio
-          </li>
+          % end
         </ul>
       </div>
       <div class="col-md-9">
@@ -97,31 +84,19 @@
           <table class="table">
             <thead>
               <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
+                <th>Subject</th>
+                <th>From</th>
+                <th>To</th>
               </tr>
             </thead>
             <tbody>
+              % for mail in selectedaccount.mails:
               <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
+                <td>{{mail.subject}}</td>
+                <td>{{mail.sender}}</td>
+                <td>{{", ".join(mail.recievers)}}</td>
               </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
+              % end
             </tbody>
           </table>
         </div>
@@ -130,18 +105,12 @@
             <h3 class="panel-title">Panel title</h3>
           </div>
           <div class="list-group">
-            <a href="#" class="list-group-item active">
-              <h4 class="list-group-item-heading">List group item heading</h4>
-              <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-            </a>
+            % for mail in selectedaccount.mails:
             <a href="#" class="list-group-item">
-              <h4 class="list-group-item-heading">Pouet List group item heading</h4>
-              <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
+              <h4 class="list-group-item-heading">{{mail.subject}} <small>{{mail.sender}}</small></h4>
+              <p class="list-group-item-text">{{mail.body[:50]}}...</p>
             </a>
-            <a href="#" class="list-group-item hidden">
-              <h4 class="list-group-item-heading">IP List group item heading</h4>
-              <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-            </a>
+            % end
           </div>
         </div>
       </div>
