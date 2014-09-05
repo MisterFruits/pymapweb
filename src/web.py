@@ -1,4 +1,4 @@
-from bottle import Bottle, run, view, static_file
+from bottle import Bottle, run, view, static_file, template
 import pymap
 
 app = Bottle()
@@ -15,13 +15,18 @@ def server_static(filepath):
 @app.route('/:username/:account')
 @view('main')
 def main(username = '', account = ''):
-    context = dict()
-    context['accounts'] = [pymap.get_random_account() for el in range(4)]
-    return context
+    accounts = [pymap.get_random_account() for el in range(4)]
+    return dict(accounts=accounts, selectedaccount=accounts[2])
 
 @app.route('/test2')
 @view('main')
 def test2(name = ''):
     return dict()
+
+@app.route('/hello')
+@app.route('/hello/<name>')
+@view('test2')
+def hello(name='World'):
+    return dict(name=name)
 
 run(app, host='localhost', port=8080, debug=True, reloader=True)
