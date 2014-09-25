@@ -8,12 +8,12 @@ import string
 def get_random_mail():
     subject = 'Subject %s' % gen_text(5)
     sender = 'Sender %s' % gen_text(5)
-    recievers = ['Reciever%d %s' % (el, gen_text(5)) for el in range(random.randint(1,3))]
+    recievers = ['Reciever%d %s' % (el, gen_text(5)) for el in range(random.randint(1, 3))]
     body = gen_text(random.randint(500, 600))
     return Mail(Header(subject, sender, recievers), body)
 
 def get_random_account():
-    mails = [get_random_mail() for el in range(random.randint(3,6))]
+    mails = [get_random_mail() for el in range(random.randint(3, 6))]
     return Account('%sacc' % gen_text(3), mails)
 
 def gen_text(length=8, chars=string.ascii_letters + string.digits):

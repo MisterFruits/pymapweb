@@ -1,24 +1,24 @@
 """
 Model for IMAP in python
 """
-import email
+#import email
 
 class Account:
     """Mail account"""
-    def __init__(self, name, mails = []):
+    def __init__(self, name, mails=None):
         self.name = name
-        self.mails = mails
+        self.mails = mails or []
 
     def __str__(self):
         return 'Account %s: %d mails' % (self.name, len(self.mails))
 
 class Mail:
     """Mail"""
-    def __init__(self, header, body, attachements = None):
+    def __init__(self, header, body, attachements=None):
         super(Mail, self).__init__()
         self.header = header
         self.body = body
-        self.attachements = attachements
+        self.attachements = attachements or []
 
     def __str__(self):
         return self.header.__str__()
