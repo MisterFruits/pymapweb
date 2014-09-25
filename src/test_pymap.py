@@ -6,9 +6,9 @@ from pymap import Account, Mail, Header
 import string
 
 def get_random_mail():
-    subject = 'Subject %s' % gen_text(5)
-    sender = 'Sender %s' % gen_text(5)
-    recievers = ['Reciever%d %s' % (el, gen_text(5)) for el in range(random.randint(1, 3))]
+    subject = 'SUBJECT_%s' % gen_text(5)
+    sender = 'SENDER_%s' % gen_text(5)
+    recievers = ['RECIEVER%d_%s' % (el, gen_text(5)) for el in range(random.randint(1, 3))]
     body = gen_text(random.randint(500, 600))
     return Mail(Header(subject, sender, recievers), body)
 
@@ -18,8 +18,6 @@ def get_random_account():
 
 def gen_text(length=8, chars=string.ascii_letters + string.digits):
     return ''.join([random.choice(chars) for i in range(length)])
-
-print('')
 
 
 # pylint: disable=R0904
@@ -45,5 +43,6 @@ class AccountTest(unittest.TestCase):
 
 if __name__ == '__main__':
     """Main procedure, launching unit tests"""
+    print(get_random_mail().__str__())
     unittest.main()
 
