@@ -2,42 +2,31 @@
 Model for IMAP in python
 """
 import email
-import random
-import string
 
 class Account:
-    """docstring for Account"""
+    """Mail account"""
     def __init__(self, name, mails):
         self.name = name
         self.mails = mails
 
 class Mail:
-    """docstring for Mail"""
-    def __init__(self, subject, sender, recievers, body, attachements = None):
+    """Mail"""
+    def __init__(self, header, body, attachements = None):
         super(Mail, self).__init__()
-        self.subject = subject
-        self.sender = sender
-        self.recievers = recievers
+        self.header = header
         self.body = body
         self.attachements = attachements
 
     def __str__(self):
-        return self.subject
+        return self.header.__str__()
 
-def get_random_mail():
-    subject = gen_text(5, 'Subject %s')
-    sender = gen_text(5, 'Sender %s')
-    recievers = [gen_text(5, 'Reciever%d %%s' % el) for el in range(random.randint(1,3))]
-    body = gen_text(random.randint(500, 600))
-    return Mail(subject, sender, recievers, body)
+class Header:
+    """Mail header"""
+    def __init__(self, subject, sender, recievers):
+        super(Header, self).__init__()
+        self.subject = subject
+        self.sender = sender
+        self.recievers = recievers
 
-def get_random_account():
-    mails = [get_random_mail() for el in range(random.randint(3,6))]
-    return Account(gen_text(3, '%sacc'), mails)
-
-def gen_text(length=8, formatter='', chars=string.ascii_letters + string.digits):
-    return ''.join([random.choice(chars) for i in range(length)])
-
-if __name__ == '__main__':
-    test = [get_random_account() for el in range(4)]
-
+    def __str__(self):
+        return "%s from %s" % (self.subject, self.sender)
