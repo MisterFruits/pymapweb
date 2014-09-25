@@ -5,9 +5,12 @@ import email
 
 class Account:
     """Mail account"""
-    def __init__(self, name, mails):
+    def __init__(self, name, mails = []):
         self.name = name
         self.mails = mails
+
+    def __str__(self):
+        return 'Account %s: %d mails' % (self.name, len(self.mails))
 
 class Mail:
     """Mail"""
