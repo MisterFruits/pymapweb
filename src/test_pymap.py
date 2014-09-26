@@ -6,11 +6,14 @@ from pymap import Account, Mail, Header
 import string
 
 def get_random_mail():
+    body = gen_text(random.randint(500, 600))
+    return Mail(get_random_header(), body)
+
+def get_random_header():
     subject = 'SUBJECT_%s' % gen_text(5)
     sender = 'SENDER_%s' % gen_text(5)
     recievers = ['RECIEVER%d_%s' % (el, gen_text(5)) for el in range(random.randint(1, 3))]
-    body = gen_text(random.randint(500, 600))
-    return Mail(Header(subject, sender, recievers), body)
+    return Header(subject, sender, recievers)
 
 def get_random_account():
     mails = [get_random_mail() for el in range(random.randint(3, 6))]
@@ -39,10 +42,32 @@ class AccountTest(unittest.TestCase):
 
     def test__str__(self):
         """Test to string method"""
-        self.assertTrue(re.search(self.acc.name, self.acc.__str__()))
+        self.assertTrue(re.search(self.acc.name, str(self.acc)))
+        self.assertTrue(re.search(str(len(self.acc.mails)), str(self.acc)))
+
+class MailTest(unittest.TestCase):
+    """Test regarding the Mail class"""
+    def setUp(self):
+        self.mail = Mail('Test Account',
+                           [get_random_mail() for el in range(5)])
+
+    def test_init(self):
+        """Tests constructor"""
+        mail = Mail('Test Mail')
+        self.assertEqual('Test Mail', mail.name)
+        self.assertTrue([] == mail.mails)
+        mails = [get_random_mail() for el in range(5)]
+        mail = Mail('Test Mail', mails)
+        self.assertEqual('Test Mail', mail.name)
+        self.assertEqual(mails, mail.mails)
+
+    def test__str__(self):
+        """Test to string method"""
+        self.assertTrue(re.search(self.mail.name, str(self.mail)))
+        self.assertTrue(re.search(str(len(self.mail.mails)), str(self.mail)))
+
 
 if __name__ == '__main__':
     """Main procedure, launching unit tests"""
-    print(get_random_mail().__str__())
     unittest.main()
 
