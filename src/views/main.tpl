@@ -102,9 +102,9 @@
         <tbody>
           % for mail in selectedaccount.mails:
           <tr>
-            <td>{{mail.subject}}</td>
-            <td>{{mail.sender}}</td>
-            <td>{{", ".join(mail.recievers)}}</td>
+            <td>{{mail.header.subject}}</td>
+            <td>{{mail.header.sender}}</td>
+            <td>{{", ".join(mail.header.recievers)}}</td>
           </tr>
           % end
         </tbody>
@@ -117,7 +117,7 @@
       <div class="list-group">
         % for mail in selectedaccount.mails:
         <a href="#" class="list-group-item">
-          <h4 class="list-group-item-heading">{{mail.subject}} <small>{{mail.sender}}</small></h4>
+          <h4 class="list-group-item-heading">{{mail.header.subject}} <small>{{mail.header.sender}}</small></h4>
           <p class="list-group-item-text">{{mail.body[:50]}}...</p>
         </a>
         % end

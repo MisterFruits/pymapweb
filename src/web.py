@@ -1,5 +1,5 @@
 from bottle import Bottle, run, view, static_file, template
-import pymap
+import pymap, test_pymap
 
 app = Bottle()
 
@@ -15,7 +15,7 @@ def server_static(filepath):
 @app.route('/:username/:account')
 @view('main')
 def main(username = '', account = ''):
-    accounts = [pymap.get_random_account() for el in range(4)]
+    accounts = [test_pymap.get_random_account() for el in range(4)]
     return dict(accounts=accounts, selectedaccount=accounts[2])
 
 @app.route('/test2')
@@ -23,10 +23,11 @@ def main(username = '', account = ''):
 def test2(name = ''):
     return dict()
 
-@app.route('/hello')
-@app.route('/hello/<name>')
+# @app.route('/hello')
+# @app.route('/hello/<name>')
 @view('test2')
 def hello(name='World'):
     return dict(name=name)
 
-run(app, host='localhost', port=8080, debug=True, reloader=True)
+if __name__ == '__main__':
+    run(app, host='localhost', port=8080, debug=True, reloader=True)
