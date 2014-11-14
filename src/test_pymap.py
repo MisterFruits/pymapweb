@@ -3,6 +3,7 @@ import unittest
 import random
 import imaplib, ssl
 import re
+from pprint import pprint as pp
 from pymap import Account, Mail, Header, ImapAccount
 import string
 
@@ -70,11 +71,10 @@ class ImapAccountTest(unittest.TestCase):
     """docstring for ImapAccountTest"""
     def test_main(self):
         context = ssl.create_default_context()
-        imap4 = imaplib.IMAP4_SSL(host='imap.free.fr', port=993, ssl_context=context)
+        imap4 = imaplib.IMAP4_SSL(host='imap.free.fr', port=993,
+                                  ssl_context=context)
         account = ImapAccount("vic.toad.tor", "toad6121021990", imap4)
-        try:
-            mails = account.mails
-
+        pp(dict(account.folders))
 
 
 if __name__ == '__main__':
