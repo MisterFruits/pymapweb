@@ -1,8 +1,9 @@
 """Test for the pymap package"""
 import unittest
 import random
+import imaplib, ssl
 import re
-from pymap import Account, Mail, Header
+from pymap import Account, Mail, Header, ImapAccount
 import string
 
 def get_random_mail():
@@ -48,23 +49,32 @@ class AccountTest(unittest.TestCase):
 class MailTest(unittest.TestCase):
     """Test regarding the Mail class"""
     def setUp(self):
-        self.mail = Mail('Test Account',
-                           [get_random_mail() for el in range(5)])
+        self.mail = Mail(get_random_header(),"The Body!")
 
-    def test_init(self):
-        """Tests constructor"""
-        mail = Mail('Test Mail')
-        self.assertEqual('Test Mail', mail.name)
-        self.assertTrue([] == mail.mails)
-        mails = [get_random_mail() for el in range(5)]
-        mail = Mail('Test Mail', mails)
-        self.assertEqual('Test Mail', mail.name)
-        self.assertEqual(mails, mail.mails)
+    # def test_init(self):
+    #     """Tests constructor"""
+    #     mail = Mail('Test Mail')
+    #     self.assertEqual('Test Mail', mail.name)
+    #     self.assertTrue([] == mail.mails)
+    #     mails = [get_random_mail() for el in range(5)]
+    #     mail = Mail('Test Mail', mails)
+    #     self.assertEqual('Test Mail', mail.name)
+    #     self.assertEqual(mails, mail.mails)
 
-    def test__str__(self):
-        """Test to string method"""
-        self.assertTrue(re.search(self.mail.name, str(self.mail)))
-        self.assertTrue(re.search(str(len(self.mail.mails)), str(self.mail)))
+    # def test__str__(self):
+    #     """Test to string method"""
+    #     self.assertTrue(re.search(self.mail.name, str(self.mail)))
+    #     self.assertTrue(re.search(str(len(self.mail.mails)), str(self.mail)))
+
+class ImapAccountTest(unittest.TestCase):
+    """docstring for ImapAccountTest"""
+    def test_main(self):
+        context = ssl.create_default_context()
+        imap4 = imaplib.IMAP4_SSL(host='imap.free.fr', port=993, ssl_context=context)
+        account = ImapAccount("vic.toad.tor", "toad6121021990", imap4)
+        try:
+            mails = account.mails
+
 
 
 if __name__ == '__main__':
