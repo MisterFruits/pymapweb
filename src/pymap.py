@@ -2,6 +2,7 @@
 Model for IMAP in python
 """
 #import email
+from collections import defaultdict
 
 class Account(object):
     """Mail account"""
@@ -34,3 +35,19 @@ class Header(object):
 
     def __str__(self):
         return "%s from %s" % (self.subject, self.sender)
+
+class ImapAccount(Account):
+    """An account for IMAP protocol"""
+    def __init__(self, name, password, imap4):
+        super(ImapAccount, self).__init__(name)
+        self.password = password
+        self.imap4 = imap4
+
+    @property
+    def mails(self):
+        self.imap4.login(self.name, self.password)
+
+    @property
+    def folders(self):
+        pass
+
