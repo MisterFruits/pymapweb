@@ -2,10 +2,6 @@
 Model for IMAP in python
 """
 #import email
-from collections import defaultdict
-def Tree():
-    """Tree structure definition"""
-    return defaultdict(Tree)
 
 class Account(object):
     """Mail account"""
@@ -79,3 +75,18 @@ Of type %s with members:
 def branch(elements, tree):
     if elements:
         branch(elements[1:], tree[elements[0]])
+
+class Tree(dict):
+    """Tree structure definition"""
+    def __getitem__(self, item):
+        try:
+            return dict.__getitem__(self, item)
+        except KeyError:
+            value = self[item] = type(self)()
+            return value
+
+    def branch(self, elements):
+        if elements:
+            branch(elements[1:], self[elements[0]])
+
+

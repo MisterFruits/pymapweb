@@ -4,7 +4,7 @@ import random
 import imaplib, ssl
 import re
 from pprint import pprint as pp
-from pymap import Account, Mail, Header, ImapAccount, Tree, branch
+from pymap import Account, Mail, Header, ImapAccount, Tree
 import string
 
 def get_random_mail():
@@ -75,7 +75,7 @@ class ImapAccountTest(unittest.TestCase):
         imap4.logout()
         # pp(dict(account.folders))
 
-class PymapTest(unittest.TestCase):
+class TreeTest(unittest.TestCase):
     """Test for package methods"""
     def test_Tree(self):
         self.assertEqual(Tree(), {})
@@ -94,15 +94,15 @@ class PymapTest(unittest.TestCase):
         actualtree = Tree()
 
         expectedtree['path']
-        branch(['path'], actualtree)
+        actualtree.branch(['path'])
         self.assertEqual(expectedtree, actualtree)
 
         expectedtree['poth']
-        branch(['poth'], actualtree)
+        actualtree.branch(['poth'])
         self.assertEqual(expectedtree, actualtree)
 
         expectedtree['path']['to']['dir']
-        branch(['path','to','dir'], actualtree)
+        actualtree.branch(['path','to','dir'])
         self.assertEqual(expectedtree, actualtree)
 
         expectedtree = Tree()
@@ -111,10 +111,10 @@ class PymapTest(unittest.TestCase):
         expectedtree[1]['A']['ii']
         expectedtree[1]['B']
         expectedtree[2]['A']['i']
-        branch([1, 'A', 'i'], actualtree)
-        branch([1, 'A', 'ii'], actualtree)
-        branch([1, 'B'], actualtree)
-        branch([2, 'A', 'i'], actualtree)
+        actualtree.branch([1, 'A', 'i'])
+        actualtree.branch([1, 'A', 'ii'])
+        actualtree.branch([1, 'B'])
+        actualtree.branch([2, 'A', 'i'])
         self.assertEqual(expectedtree, actualtree)
 
 if __name__ == '__main__':
