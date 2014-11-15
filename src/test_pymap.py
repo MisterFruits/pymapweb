@@ -72,7 +72,8 @@ class ImapAccountTest(unittest.TestCase):
     def test_main(self):
         imap4 = imaplib.IMAP4_SSL(host='imap.free.fr', port=993)
         account = ImapAccount("vic.toad.tor", "toad6121021990", imap4)
-        pp(dict(account.folders))
+        imap4.logout()
+        # pp(dict(account.folders))
 
 class PymapTest(unittest.TestCase):
     """Test for package methods"""
@@ -89,14 +90,32 @@ class PymapTest(unittest.TestCase):
         self.assertEqual({40:{3:{}}, 30:{}}, tree)
 
     def test_branch(self):
-        tree = Tree()
-        tree['path']
-        self.assertEqual(tree, branch(['path']))
-        tree['path']['to']['dir']
-        self.assertEqual(tree, branch(['path','to','dir']))
-        # self.assertEqual(, branch(['path'], tree))
-        # self.assertEqual(tree['path']['to']['dir'],
-        #                  branch(['path', 'to', 'dir'], tree))
+        expectedtree = Tree()
+        actualtree = Tree()
+
+        expectedtree['path']
+        branch(['path'], actualtree)
+        self.assertEqual(expectedtree, actualtree)
+
+        expectedtree['poth']
+        branch(['poth'], actualtree)
+        self.assertEqual(expectedtree, actualtree)
+
+        expectedtree['path']['to']['dir']
+        branch(['path','to','dir'], actualtree)
+        self.assertEqual(expectedtree, actualtree)
+
+        expectedtree = Tree()
+        actualtree = Tree()
+        expectedtree[1]['A']['i']
+        expectedtree[1]['A']['ii']
+        expectedtree[1]['B']
+        expectedtree[2]['A']['i']
+        branch([1, 'A', 'i'], actualtree)
+        branch([1, 'A', 'ii'], actualtree)
+        branch([1, 'B'], actualtree)
+        branch([2, 'A', 'i'], actualtree)
+        self.assertEqual(expectedtree, actualtree)
 
 if __name__ == '__main__':
     """Main procedure, launching unit tests"""

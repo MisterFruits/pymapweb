@@ -3,7 +3,6 @@ Model for IMAP in python
 """
 #import email
 from collections import defaultdict
-from pprint import pprint as pp
 def Tree():
     """Tree structure definition"""
     return defaultdict(Tree)
@@ -60,7 +59,7 @@ class ImapAccount(Account):
 
     @property
     def folders(self):
-        """Return folders account in a Tree struct"""
+        """Return folders account in a Tree structure"""
         tree = Tree()
         try:
             self.imap4.login(self.name, self.password)
@@ -77,10 +76,6 @@ Of type %s with members:
             self.imap4.logout()
         return tree
 
-def branch(elements, tree=None):
-    tree = tree or Tree()
-    pp(dict(tree))
-    if len(elements) > 0:
-        print('entering matrix')
+def branch(elements, tree):
+    if elements:
         branch(elements[1:], tree[elements[0]])
-    return tree
