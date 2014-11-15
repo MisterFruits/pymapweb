@@ -78,12 +78,9 @@ def branch(elements, tree):
 
 class Tree(dict):
     """Tree structure definition"""
-    def __getitem__(self, item):
-        try:
-            return dict.__getitem__(self, item)
-        except KeyError:
-            value = self[item] = type(self)()
-            return value
+    def __missing__(self, key):
+        value = self[key] = type(self)()
+        return value
 
     def branch(self, elements):
         if elements:
