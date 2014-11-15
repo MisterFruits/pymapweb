@@ -1,7 +1,6 @@
 """
 Model for IMAP in python
 """
-#import email
 
 class Account(object):
     """Mail account"""
@@ -86,4 +85,9 @@ class Tree(dict):
         if elements:
             branch(elements[1:], self[elements[0]])
 
-
+    def walk(self):
+        """ iterate tree in pre-order depth-first search order """
+        for key, value in self.items():
+            yield key
+            for child in self[key].walk():
+                yield child

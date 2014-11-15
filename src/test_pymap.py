@@ -117,6 +117,11 @@ class TreeTest(unittest.TestCase):
         actualtree.branch([2, 'A', 'i'])
         self.assertEqual(expectedtree, actualtree)
 
+    def test_walk(self):
+        tree = Tree()
+        tree.branch([1, 'A', 'ii'])
+        self.assertEqual([1, 'A', 'ii'], list(tree.walk()))
+
 if __name__ == '__main__':
     """Main procedure, launching unit tests"""
     unittest.main()
