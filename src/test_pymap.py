@@ -4,7 +4,7 @@ import random
 import imaplib, ssl
 import re
 from pprint import pprint as pp
-from pymap import Account, Mail, Header, ImapAccount
+from pymap import Account, Mail, Header, ImapAccount, Tree, branch
 import string
 
 def get_random_mail():
@@ -70,12 +70,33 @@ class MailTest(unittest.TestCase):
 class ImapAccountTest(unittest.TestCase):
     """docstring for ImapAccountTest"""
     def test_main(self):
-        context = ssl.create_default_context()
-        imap4 = imaplib.IMAP4_SSL(host='imap.free.fr', port=993,
-                                  ssl_context=context)
+        imap4 = imaplib.IMAP4_SSL(host='imap.free.fr', port=993)
         account = ImapAccount("vic.toad.tor", "toad6121021990", imap4)
         pp(dict(account.folders))
 
+class PymapTest(unittest.TestCase):
+    """Test for package methods"""
+    def test_Tree(self):
+        self.assertEqual(Tree(), {})
+        tree = Tree()
+        tree[40]
+        self.assertEqual({40:{}}, tree)
+        tree[40]
+        self.assertEqual({40:{}}, tree)
+        tree[30]
+        self.assertEqual({40:{}, 30:{}}, tree)
+        tree[40][3]
+        self.assertEqual({40:{3:{}}, 30:{}}, tree)
+
+    def test_branch(self):
+        tree = Tree()
+        tree['path']
+        self.assertEqual(tree, branch(['path']))
+        tree['path']['to']['dir']
+        self.assertEqual(tree, branch(['path','to','dir']))
+        # self.assertEqual(, branch(['path'], tree))
+        # self.assertEqual(tree['path']['to']['dir'],
+        #                  branch(['path', 'to', 'dir'], tree))
 
 if __name__ == '__main__':
     """Main procedure, launching unit tests"""
