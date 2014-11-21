@@ -1,6 +1,7 @@
 """
-Model for IMAP in python
+Model for Mails accounts in python
 """
+from . import utils
 
 class Account(object):
     """Mail account"""
@@ -55,7 +56,7 @@ class ImapAccount(Account):
     @property
     def folders(self):
         """Return folders account in a Tree structure"""
-        tree = Tree()
+        tree = utils.Tree()
         try:
             self.imap4.login(self.name, self.password)
             typ, data = self.imap4.list()
@@ -71,23 +72,3 @@ Of type %s with members:
             self.imap4.logout()
         return tree
 
-def branch(elements, tree):
-    if elements:
-        branch(elements[1:], tree[elements[0]])
-
-class Tree(dict):
-    """Tree structure definition"""
-    def __missing__(self, key):
-        value = self[key] = type(self)()
-        return value
-
-    def branch(self, elements):
-        if elements:
-            branch(elements[1:], self[elements[0]])
-
-    def walk(self):
-        """ iterate tree in pre-order depth-first search order """
-        for key, value in self.items():
-            yield key
-            for child in self[key].walk():
-                yield child

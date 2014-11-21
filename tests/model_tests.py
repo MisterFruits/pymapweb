@@ -1,43 +1,25 @@
 """Test for the pymap package"""
 import unittest
-import random
-import imaplib, ssl
-import re
+from pymap.model import Account, Mail, Header
+import pymap.utils
+import re, random
 from pprint import pprint as pp
-from pymap import Account, Mail, Header, ImapAccount, Tree
-import string
-
-def get_random_mail():
-    body = gen_text(random.randint(500, 600))
-    return Mail(get_random_header(), body)
-
-def get_random_header():
-    subject = 'SUBJECT_%s' % gen_text(5)
-    sender = 'SENDER_%s' % gen_text(5)
-    recievers = ['RECIEVER%d_%s' % (el, gen_text(5)) for el in range(random.randint(1, 3))]
-    return Header(subject, sender, recievers)
-
-def get_random_account():
-    mails = [get_random_mail() for el in range(random.randint(3, 6))]
-    return Account('%sacc' % gen_text(3), mails)
-
-def gen_text(length=8, chars=string.ascii_letters + string.digits):
-    return ''.join([random.choice(chars) for i in range(length)])
-
 
 # pylint: disable=R0904
 class AccountTest(unittest.TestCase):
     """Test regarding the Account class"""
     def setUp(self):
         self.acc = Account('Test Account',
-                           [get_random_mail() for el in range(5)])
+                           [RandomMail() for el in range(5)])
 
     def test_init(self):
-        """Tests constructor"""
+        """
+        Tests constructor
+        """
         acc = Account('Test Account')
         self.assertEqual('Test Account', acc.name)
         self.assertTrue([] == acc.mails)
-        mails = [get_random_mail() for el in range(5)]
+        mails = [RandomMail() for el in range(5)]
         acc = Account('Test Account', mails)
         self.assertEqual('Test Account', acc.name)
         self.assertEqual(mails, acc.mails)
@@ -57,7 +39,7 @@ class MailTest(unittest.TestCase):
     #     mail = Mail('Test Mail')
     #     self.assertEqual('Test Mail', mail.name)
     #     self.assertTrue([] == mail.mails)
-    #     mails = [get_random_mail() for el in range(5)]
+    #     mails = [RandomMail() for el in range(5)]
     #     mail = Mail('Test Mail', mails)
     #     self.assertEqual('Test Mail', mail.name)
     #     self.assertEqual(mails, mail.mails)
@@ -67,62 +49,34 @@ class MailTest(unittest.TestCase):
     #     self.assertTrue(re.search(self.mail.name, str(self.mail)))
     #     self.assertTrue(re.search(str(len(self.mail.mails)), str(self.mail)))
 
-class ImapAccountTest(unittest.TestCase):
-    """docstring for ImapAccountTest"""
-    def test_main(self):
-        imap4 = imaplib.IMAP4_SSL(host='imap.free.fr', port=993)
-        account = ImapAccount("vic.toad.tor", "toad6121021990", imap4)
-        imap4.logout()
-        # pp(dict(account.folders))
+# class ImapAccountTest(unittest.TestCase):
+#     """docstring for ImapAccountTest"""
+#     def test_main(self):
+#         imap4 = imaplib.IMAP4_SSL(host='imap.free.fr', port=993)
+#         account = ImapAccount("vic.toad.tor", "", imap4)
+#         imap4.logout()
+#         # pp(dict(account.folders))
+#
+# if __name__ == '__main__':
+#     """Main procedure, launching unit tests"""
+#     unittest.main()
 
-class TreeTest(unittest.TestCase):
-    """Test for package methods"""
-    def test_Tree(self):
-        self.assertEqual(Tree(), {})
-        tree = Tree()
-        tree[40]
-        self.assertEqual({40:{}}, tree)
-        tree[40]
-        self.assertEqual({40:{}}, tree)
-        tree[30]
-        self.assertEqual({40:{}, 30:{}}, tree)
-        tree[40][3]
-        self.assertEqual({40:{3:{}}, 30:{}}, tree)
+class RandomAccount(Account):
+    """Account with random generated datas for tests purposes"""
+    def __init__(self):
+        super(RandomAccount, self).__init__('%sacc' % pymap.utils.gentext(3))
+        mails = [RandomMail() for el in range(random.randint(3, 6))]
 
-    def test_branch(self):
-        expectedtree = Tree()
-        actualtree = Tree()
+class RandomMail(Mail):
+    """Mail with random generated dates for tests purposes"""
+    def __init__(self):
+        super(RandomMail, self).__init__(RandomHeader(),
+                                        pymap.utils.gentext(random.randint(500, 600)))
 
-        expectedtree['path']
-        actualtree.branch(['path'])
-        self.assertEqual(expectedtree, actualtree)
-
-        expectedtree['poth']
-        actualtree.branch(['poth'])
-        self.assertEqual(expectedtree, actualtree)
-
-        expectedtree['path']['to']['dir']
-        actualtree.branch(['path','to','dir'])
-        self.assertEqual(expectedtree, actualtree)
-
-        expectedtree = Tree()
-        actualtree = Tree()
-        expectedtree[1]['A']['i']
-        expectedtree[1]['A']['ii']
-        expectedtree[1]['B']
-        expectedtree[2]['A']['i']
-        actualtree.branch([1, 'A', 'i'])
-        actualtree.branch([1, 'A', 'ii'])
-        actualtree.branch([1, 'B'])
-        actualtree.branch([2, 'A', 'i'])
-        self.assertEqual(expectedtree, actualtree)
-
-    def test_walk(self):
-        tree = Tree()
-        tree.branch([1, 'A', 'ii'])
-        self.assertEqual([1, 'A', 'ii'], list(tree.walk()))
-
-if __name__ == '__main__':
-    """Main procedure, launching unit tests"""
-    unittest.main()
-
+class RandomHeader(Header):
+    """docstring for RandomHeader"""
+    def __init__(self):
+        super(RandomHeader, self).__init__('SUBJECT_%s' % pymap.utils.gentext(5),
+            'SENDER_%s' % pymap.utils.gentext(5),
+            ['RECIEVER%d_%s' % (el, pymap.utils.gentext(5))
+                for el in range(random.randint(1, 3))])
