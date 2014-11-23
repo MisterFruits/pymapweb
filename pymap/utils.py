@@ -7,12 +7,13 @@ class Tree(dict):
         return value
 
     def branch(self, elements):
+        """Fill this tree branch from a list"""
         if elements:
             branch(elements[1:], self[elements[0]])
 
     def walk(self):
         """ iterate tree in pre-order depth-first search order """
-        for key, value in self.items():
+        for key in self.keys():
             yield key
             for child in self[key].walk():
                 yield child

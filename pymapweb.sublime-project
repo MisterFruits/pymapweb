@@ -10,10 +10,14 @@
     [
         {
             "name": "Python venv",
-            "path": "/Users/moita/.virtualenvs/clean/bin/",
-            "cmd": ["python", "-u", "$file"],
+            "cmd": ["nosetests",
+                        "--with-coverage",
+                        "--cover-package=pymap",
+                        "tests"],
+
             "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
-            "selector": "source.python"
+            "working_dir" : "$project_path",
+            "selector": "source.python",
         }
 
     ],

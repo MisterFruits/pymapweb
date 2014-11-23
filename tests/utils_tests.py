@@ -66,5 +66,5 @@ class TreeTest(unittest.TestCase):
         tree.branch([1, 'A', 'ii'])
         self.assertEqual([1, 'A', 'ii'], list(tree.walk()))
 
- if __name__ == '__main__':
+if __name__ == '__main__':
     unittest.main()
