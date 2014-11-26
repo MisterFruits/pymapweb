@@ -27,7 +27,7 @@ class UtilsTest(unittest.TestCase):
             keyring.get_password('system', 'username'))
         self.assertNotEqual('',
             keyring.get_password('imap.free.fr',
-                                 'vit.toad.tor@free.fr'))
+                                 'vit.toad.tor'))
 
 class TreeTest(unittest.TestCase):
     """Test for Tree class"""
