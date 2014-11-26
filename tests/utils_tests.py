@@ -1,4 +1,5 @@
 import unittest
+import keyring, logging
 from pymap.utils import gentext, branch, Tree
 
 class UtilsTest(unittest.TestCase):
@@ -18,6 +19,15 @@ class UtilsTest(unittest.TestCase):
         self.assertEqual(expectedtree, tree)
         branch([1,2,3], tree)
         self.assertEqual(expectedtree, tree)
+
+    def test_keyring(self):
+        """Testing keyring module"""
+        keyring.set_password("system", "username", "password")
+        self.assertEqual('password',
+            keyring.get_password('system', 'username'))
+        self.assertNotEqual('',
+            keyring.get_password('imap.free.fr',
+                                 'vit.toad.tor@free.fr'))
 
 class TreeTest(unittest.TestCase):
     """Test for Tree class"""
