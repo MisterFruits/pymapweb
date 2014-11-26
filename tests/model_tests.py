@@ -2,7 +2,7 @@
 import unittest
 from pymap.model import Account, Mail, Header, ImapAccount
 import pymap.utils
-import re, random, imaplib
+import re, random, imaplib, keyring
 from pprint import pprint as pp
 
 # pylint: disable=R0904
@@ -24,7 +24,7 @@ class AccountTest(unittest.TestCase):
         self.assertEqual('Test Account', acc.name)
         self.assertEqual(mails, acc.mails)
 
-    def test__str__(self):
+    def test_str(self):
         """Test to string method"""
         self.assertRegex(str(self.acc), self.acc.name)
         self.assertRegex(str(self.acc), str(len(self.acc.mails)))
@@ -34,18 +34,23 @@ class MailTest(unittest.TestCase):
     def setUp(self):
         self.mail = Mail(RandomHeader(), "The Body!")
 
-    def test__str__(self):
+    def test_str(self):
         """Test to string method"""
         self.assertRegex(str(self.mail), str(self.mail.header))
 
 class ImapAccountTest(unittest.TestCase):
     """docstring for ImapAccountTest"""
-    def test_main(self):
-        imap4 = imaplib.IMAP4_SSL(host='imap.free.fr', port=993)
-        account = ImapAccount("vic.toad.tor", "", imap4)
-        imap4.logout()
-        # pp(dict(account.folders))
+    def test_init(self):
+        host = 'imap.free.fr'
+        usern = 'vic.toad.tor'
+        imap4 = imaplib.IMAP4_SSL(host=host, port=993)
+        password = keyring.get_password(host, usern)
+        account = ImapAccount(usern, password, imap4)
+        self.assertTrue(account.password)
+        self.assertEqual(usern, account.name)
 
+    def test_mail(self):
+        pass
 class RandomAccount(Account):
     """Account with random generated datas for tests purposes"""
     def __init__(self):
