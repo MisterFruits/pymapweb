@@ -22,11 +22,14 @@ class UtilsTest(unittest.TestCase):
 
     def test_keyring(self):
         """Testing keyring module"""
+        self.assertEqual(None,
+                keyring.get_password("zoubzoub", "blbablalb"))
+
         keyring.set_password("system", "username", "password")
         self.assertEqual('password',
             keyring.get_password('system', 'username'))
-        self.assertNotEqual('',
-            keyring.get_password('imap.free.fr',
+
+        self.assertTrue(keyring.get_password('imap.free.fr',
                                  'vit.toad.tor'))
 
 class TreeTest(unittest.TestCase):
