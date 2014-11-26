@@ -34,35 +34,17 @@ class MailTest(unittest.TestCase):
     def setUp(self):
         self.mail = Mail(RandomHeader(), "The Body!")
 
-    # def test_init(self):
-    #     """Tests constructor"""
-    #     mail = Mail('Test Mail')
-    #     self.assertEqual('Test Mail', mail.name)
-    #     self.assertTrue([] == mail.mails)
-    #     mails = [RandomMail() for el in range(5)]
-    #     mail = Mail('Test Mail', mails)
-    #     self.assertEqual('Test Mail', mail.name)
-    #     self.assertEqual(mails, mail.mails)
-
-    # def test__str__(self):
-    #     """Test to string method"""
-    #     self.assertTrue(re.search(self.mail.name, str(self.mail)))
-    #     self.assertTrue(re.search(str(len(self.mail.mails)), str(self.mail)))
     def test__str__(self):
         """Test to string method"""
         self.assertRegex(str(self.mail), str(self.mail.header))
 
-# class ImapAccountTest(unittest.TestCase):
-#     """docstring for ImapAccountTest"""
-#     def test_main(self):
-#         imap4 = imaplib.IMAP4_SSL(host='imap.free.fr', port=993)
-#         account = ImapAccount("vic.toad.tor", "", imap4)
-#         imap4.logout()
-#         # pp(dict(account.folders))
-#
-# if __name__ == '__main__':
-#     """Main procedure, launching unit tests"""
-#     unittest.main()
+class ImapAccountTest(unittest.TestCase):
+    """docstring for ImapAccountTest"""
+    def test_main(self):
+        imap4 = imaplib.IMAP4_SSL(host='imap.free.fr', port=993)
+        account = ImapAccount("vic.toad.tor", "", imap4)
+        imap4.logout()
+        # pp(dict(account.folders))
 
 class RandomAccount(Account):
     """Account with random generated datas for tests purposes"""
