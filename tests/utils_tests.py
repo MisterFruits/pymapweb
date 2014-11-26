@@ -30,7 +30,7 @@ class UtilsTest(unittest.TestCase):
             keyring.get_password('system', 'username'))
 
         self.assertTrue(keyring.get_password('imap.free.fr',
-                                 'vit.toad.tor'))
+                                 'vic.toad.tor'))
 
 class TreeTest(unittest.TestCase):
     """Test for Tree class"""
