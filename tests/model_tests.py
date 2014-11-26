@@ -1,8 +1,8 @@
 """Test for the pymap package"""
 import unittest
-from pymap.model import Account, Mail, Header
+from pymap.model import Account, Mail, Header, ImapAccount
 import pymap.utils
-import re, random
+import re, random, imaplib
 from pprint import pprint as pp
 
 # pylint: disable=R0904
@@ -26,13 +26,13 @@ class AccountTest(unittest.TestCase):
 
     def test__str__(self):
         """Test to string method"""
-        self.assertTrue(re.search(self.acc.name, str(self.acc)))
-        self.assertTrue(re.search(str(len(self.acc.mails)), str(self.acc)))
+        self.assertRegex(str(self.acc), self.acc.name)
+        self.assertRegex(str(self.acc), str(len(self.acc.mails)))
 
 class MailTest(unittest.TestCase):
     """Test regarding the Mail class"""
     def setUp(self):
-        self.mail = Mail(get_random_header(),"The Body!")
+        self.mail = Mail(RandomHeader(), "The Body!")
 
     # def test_init(self):
     #     """Tests constructor"""
@@ -48,6 +48,9 @@ class MailTest(unittest.TestCase):
     #     """Test to string method"""
     #     self.assertTrue(re.search(self.mail.name, str(self.mail)))
     #     self.assertTrue(re.search(str(len(self.mail.mails)), str(self.mail)))
+    def test__str__(self):
+        """Test to string method"""
+        self.assertRegex(str(self.mail), str(self.mail.header))
 
 # class ImapAccountTest(unittest.TestCase):
 #     """docstring for ImapAccountTest"""
