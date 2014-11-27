@@ -2,7 +2,7 @@
 import unittest
 from pymap.model import Account, Mail, Header, ImapAccount
 import pymap.utils
-import re, random, imaplib, keyring
+import re, random, imaplib, keyring, logging
 from pprint import pprint as pp
 
 # pylint: disable=R0904
@@ -48,7 +48,10 @@ class ImapAccountTest(unittest.TestCase):
         self.account = ImapAccount(self.usern, password, self.imap4)
 
     def tearDown(self):
-        self.imap4.logout()
+        try:
+            self.imap4.logout()
+        except OSError as e:
+            logging.debug('Impossible to logout')
 
     def test_init(self):
         self.assertTrue(self.account.password)
@@ -57,7 +60,10 @@ class ImapAccountTest(unittest.TestCase):
     def test_mails(self):
         pass
     def test_folders(self):
-        pass
+        foldertree = self.account.folders
+        logging.debug(repr(foldertree))
+        self.fail()
+        # self.assertEqual('', foldertree)
 
 class RandomAccount(Account):
     """Account with random generated datas for tests purposes"""

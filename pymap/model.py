@@ -1,6 +1,7 @@
 """
 Model for Mails accounts in python
 """
+import re
 from . import utils
 
 class Account(object):
@@ -60,15 +61,22 @@ class ImapAccount(Account):
         try:
             self.imap4.login(self.name, self.password)
             typ, data = self.imap4.list()
-            if typ == 'OK':
-                for response in data:
-                    pass
-                    # branch(response[1], response[2], tree)
-            else:
-                raise NotImplementedError("""Response code %r not handled.
-Of type %s with members:
-%s""" % (typ, type(typ), "\n".join(dir(typ))))
         finally:
-            self.imap4.logout()
+           self.imap4.logout()
+        if typ == 'OK':
+            for response in data:
+                (flags, delimiter, mailbox_name) = parse_list_response(response)
+                tree.branch(mailbox_name.split(delimiter))
+        else:
+            raise NotImplementedError("""Response code %r not handled."""
+                    """Of type %s with members:"""
+                    """%s""" % (typ, type(typ), "\n".join(dir(typ))))
         return tree
 
+
+list_response_pattern = re.compile(r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" (?P<name>.*)')
+
+def parse_list_response(line):
+    flags, delimiter, mailbox_name = list_response_pattern.match(line.decode()).groups()
+    mailbox_name = mailbox_name.strip('"')
+    return (flags, delimiter, mailbox_name)
