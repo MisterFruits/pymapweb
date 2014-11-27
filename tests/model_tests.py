@@ -40,17 +40,25 @@ class MailTest(unittest.TestCase):
 
 class ImapAccountTest(unittest.TestCase):
     """docstring for ImapAccountTest"""
-    def test_init(self):
+    def setUp(self):
         host = 'imap.free.fr'
-        usern = 'vic.toad.tor'
-        imap4 = imaplib.IMAP4_SSL(host=host, port=993)
-        password = keyring.get_password(host, usern)
-        account = ImapAccount(usern, password, imap4)
-        self.assertTrue(account.password)
-        self.assertEqual(usern, account.name)
+        self.usern = 'vic.toad.tor'
+        self.imap4 = imaplib.IMAP4_SSL(host=host, port=993)
+        password = keyring.get_password(host, self.usern)
+        self.account = ImapAccount(self.usern, password, self.imap4)
 
-    def test_mail(self):
+    def tearDown(self):
+        self.imap4.logout()
+
+    def test_init(self):
+        self.assertTrue(self.account.password)
+        self.assertEqual(self.usern, self.account.name)
+
+    def test_mails(self):
         pass
+    def test_folders(self):
+        pass
+
 class RandomAccount(Account):
     """Account with random generated datas for tests purposes"""
     def __init__(self):
