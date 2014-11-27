@@ -11,12 +11,15 @@ class Tree(dict):
         if elements:
             branch(elements[1:], self[elements[0]])
 
-    def walk(self):
+    def walk(self, level=0):
         """ iterate tree in pre-order depth-first search order """
         for key in self.keys():
-            yield key
-            for child in self[key].walk():
+            yield (level, key)
+            for child in self[key].walk(level+1):
                 yield child
+
+    def __repr__(self, level=0):
+        return '\n'.join(['\t'*el[0]+repr(el[1]) for el in self.walk()])
 
 def branch(elements, tree):
     """Fill a tree branch from a list"""
