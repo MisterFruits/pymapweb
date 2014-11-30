@@ -1,6 +1,10 @@
-import string, random
+import string, random, logging
 
 class Tree(dict):
+    def __init__(self, elements=None):
+        super(Tree, self).__init__()
+        if elements: self.branch(elements)
+
     """Tree structure definition"""
     def __missing__(self, key):
         value = self[key] = type(self)()
@@ -20,6 +24,23 @@ class Tree(dict):
 
     def __repr__(self, level=0):
         return '\n'.join(['\t'*el[0]+repr(el[1]) for el in self.walk()])
+
+    def __contains__(self, item):
+        if type(item) is list:
+            return self.includes(Tree(item))
+        elif type(item) is Tree:
+            return self.includes(tree)
+        logging.debug('Type %s is not handled, try a list or a dict/Tree'
+            % type(item))
+        return False
+
+    def includes(self, tree):
+        res = True
+        for key, value in tree.items():
+            if not super(Tree, self).__contains__(key):
+                return False
+            res = res and self[key].includes(tree[key])
+        return res
 
 def branch(elements, tree):
     """Fill a tree branch from a list"""

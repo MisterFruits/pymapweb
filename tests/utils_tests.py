@@ -80,5 +80,24 @@ class TreeTest(unittest.TestCase):
         tree.branch(treedef)
         self.assertEqual(treedef, list(zip(*tree.walk()))[1])
 
+    def test_includes(self):
+        tree = Tree()
+        self.assertTrue(tree.includes({}))
+        self.assertFalse(tree.includes({10:{}}))
+        tree[10]
+        tree[20][30]
+        self.assertTrue(tree.includes({10:{}}))
+        self.assertTrue(tree.includes({20:{}}))
+        self.assertTrue(tree.includes({20:{30:{}}}))
+
+
+    def test_contains(self):
+        tree = Tree()
+        self.assertFalse([10] in tree)
+        tree[10]
+        self.assertTrue([10] in tree)
+        self.assertFalse(10 in tree)
+        self.assertFalse('bla' in tree)
+
 if __name__ == '__main__':
     unittest.main()
