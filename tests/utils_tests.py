@@ -89,7 +89,7 @@ class TreeTest(unittest.TestCase):
         self.assertTrue(tree.includes({10:{}}))
         self.assertTrue(tree.includes({20:{}}))
         self.assertTrue(tree.includes({20:{30:{}}}))
-
+        self.assertFalse(tree.includes({30:{}}))
 
     def test_contains(self):
         tree = Tree()
@@ -98,6 +98,9 @@ class TreeTest(unittest.TestCase):
         self.assertTrue([10] in tree)
         self.assertFalse(10 in tree)
         self.assertFalse('bla' in tree)
-
+        tree[20][30]
+        self.assertTrue([20] in tree)
+        self.assertFalse([30] in tree)
+        self.assertTrue([20, 30] in tree)
 if __name__ == '__main__':
     unittest.main()
