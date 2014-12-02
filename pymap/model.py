@@ -62,7 +62,7 @@ class ImapAccount(Account):
             self.imap4.login(self.name, self.password)
             typ, data = self.imap4.list()
         finally:
-           self.imap4.logout()
+            self.imap4.logout()
         if typ == 'OK':
             for response in data:
                 (flags, delimiter, mailbox_name) = parse_list_response(response)
@@ -74,9 +74,11 @@ class ImapAccount(Account):
         return tree
 
 
-list_response_pattern = re.compile(r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" (?P<name>.*)')
+LIST_RESPONSE_PATTERN = re.compile(
+    r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" (?P<name>.*)')
 
 def parse_list_response(line):
-    flags, delimiter, mailbox_name = list_response_pattern.match(line.decode()).groups()
+    flags, delimiter, mailbox_name = LIST_RESPONSE_PATTERN.match(
+        line.decode()).groups()
     mailbox_name = mailbox_name.strip('"')
     return (flags, delimiter, mailbox_name)

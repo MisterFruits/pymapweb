@@ -1,11 +1,12 @@
 import string, random, logging
 
 class Tree(dict):
+    """Tree structure definition"""
     def __init__(self, elements=None):
         super(Tree, self).__init__()
-        if elements: self.branch(elements)
+        if elements:
+            self.branch(elements)
 
-    """Tree structure definition"""
     def __missing__(self, key):
         value = self[key] = type(self)()
         return value
@@ -29,14 +30,14 @@ class Tree(dict):
         if type(item) is list:
             return self.includes(Tree(item))
         elif type(item) is Tree:
-            return self.includes(tree)
-        logging.debug('Type %s is not handled, try a list or a dict/Tree'
-            % type(item))
+            return self.includes(item)
+        logging.debug('Type %s is not handled, try a list or a dict/Tree',
+                        type(item))
         return False
 
     def includes(self, tree):
         res = True
-        for key, value in tree.items():
+        for key in tree.keys():
             if not super(Tree, self).__contains__(key):
                 return False
             res = res and self[key].includes(tree[key])
