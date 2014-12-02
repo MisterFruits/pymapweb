@@ -1,8 +1,9 @@
 """Test for the pymap package"""
 import unittest
+from unittest import mock
 from pymap.model import Account, Mail, Header, ImapAccount
 import pymap.utils
-import re, random, imaplib, keyring, logging
+import re, random, logging
 from pprint import pprint as pp
 
 # pylint: disable=R0904
@@ -42,28 +43,20 @@ class ImapAccountTest(unittest.TestCase):
     """docstring for ImapAccountTest"""
     def setUp(self):
         host = 'imap.free.fr'
-        self.usern = 'vic.toad.tor'
-        self.imap4 = imaplib.IMAP4_SSL(host=host, port=993)
-        password = keyring.get_password(host, self.usern)
-        self.account = ImapAccount(self.usern, password, self.imap4)
-
-    def tearDown(self):
-        try:
-            self.imap4.logout()
-        except OSError as e:
-            logging.debug('Impossible to logout')
+        self.username = 'username'
+        self.password = 'password'
+        self.imap4 = mock.Mock()
+        self.account = ImapAccount(self.username, self.password, self.imap4)
 
     def test_init(self):
         self.assertTrue(self.account.password)
-        self.assertEqual(self.usern, self.account.name)
+        self.assertEqual(self.username, self.account.name)
 
     def test_mails(self):
         pass
     def test_folders(self):
+        self.imap4.list.return_value = imap_list
         foldertree = self.account.folders
-        logging.debug(repr(foldertree))
-        self.fail()
-        # self.assertEqual('', foldertree)
 
 class RandomAccount(Account):
     """Account with random generated datas for tests purposes"""
@@ -84,3 +77,6 @@ class RandomHeader(Header):
             'SENDER_%s' % pymap.utils.gentext(5),
             ['RECIEVER%d_%s' % (el, pymap.utils.gentext(5))
                 for el in range(random.randint(1, 3))])
+
+
+imap_list = ('OK', [b'(\\HasChildren) "/" "[Airmail]"', b'(\\HasNoChildren) "/" "[Airmail]/Done"', b'(\\HasNoChildren) "/" "[Airmail]/Memo"', b'(\\HasNoChildren) "/" "[Airmail]/To Do"', b'(\\HasNoChildren) "/" "Archive"', b'(\\HasNoChildren) "/" "Chats"', b'(\\HasNoChildren) "/" "Contacts"', b'(\\HasNoChildren) "/" "Drafts"', b'(\\HasNoChildren) "/" "Emailed Contacts"', b'(\\HasChildren) "/" "INBOX"', b'(\\HasNoChildren) "/" "INBOX/sent-mail"', b'(\\NoInferiors) "/" "Junk"', b'(\\HasNoChildren) "/" "Sent"', b'(\\HasNoChildren) "/" "Starred"', b'(\\HasNoChildren) "/" "Trash"'])
