@@ -68,7 +68,7 @@ class RandomMail(Mail):
     """Mail with random generated dates for tests purposes"""
     def __init__(self):
         super(RandomMail, self).__init__(RandomHeader(),
-                                        pymap.utils.gentext(random.randint(500, 600)))
+                        pymap.utils.gentext(random.randint(500, 600)))
 
 class RandomHeader(Header):
     """docstring for RandomHeader"""
@@ -79,4 +79,19 @@ class RandomHeader(Header):
                 for el in range(random.randint(1, 3))])
 
 
-imap_list = ('OK', [b'(\\HasChildren) "/" "[Airmail]"', b'(\\HasNoChildren) "/" "[Airmail]/Done"', b'(\\HasNoChildren) "/" "[Airmail]/Memo"', b'(\\HasNoChildren) "/" "[Airmail]/To Do"', b'(\\HasNoChildren) "/" "Archive"', b'(\\HasNoChildren) "/" "Chats"', b'(\\HasNoChildren) "/" "Contacts"', b'(\\HasNoChildren) "/" "Drafts"', b'(\\HasNoChildren) "/" "Emailed Contacts"', b'(\\HasChildren) "/" "INBOX"', b'(\\HasNoChildren) "/" "INBOX/sent-mail"', b'(\\NoInferiors) "/" "Junk"', b'(\\HasNoChildren) "/" "Sent"', b'(\\HasNoChildren) "/" "Starred"', b'(\\HasNoChildren) "/" "Trash"'])
+imap_list = ('OK',
+ [b'(\\HasChildren) "/" "[Airmail]"',
+  b'(\\HasNoChildren) "/" "[Airmail]/Done"',
+  b'(\\HasNoChildren) "/" "[Airmail]/Memo"',
+  b'(\\HasNoChildren) "/" "[Airmail]/To Do"',
+  b'(\\HasNoChildren) "/" "Archive"',
+  b'(\\HasNoChildren) "/" "Chats"',
+  b'(\\HasNoChildren) "/" "Contacts"',
+  b'(\\HasNoChildren) "/" "Drafts"',
+  b'(\\HasNoChildren) "/" "Emailed Contacts"',
+  b'(\\HasChildren) "/" "INBOX"',
+  b'(\\HasNoChildren) "/" "INBOX/sent-mail"',
+  b'(\\NoInferiors) "/" "Junk"',
+  b'(\\HasNoChildren) "/" "Sent"',
+  b'(\\HasNoChildren) "/" "Starred"',
+  b'(\\HasNoChildren) "/" "Trash"'])
