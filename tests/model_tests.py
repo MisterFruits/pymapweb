@@ -14,9 +14,7 @@ class AccountTest(unittest.TestCase):
                            [RandomMail() for el in range(5)])
 
     def test_init(self):
-        """
-        Tests constructor
-        """
+        """Tests constructor"""
         acc = Account('Test Account')
         self.assertEqual('Test Account', acc.name)
         self.assertTrue([] == acc.mails)
