@@ -1,7 +1,7 @@
+# -*- coding: utf-8 -*-
 """
 Model for Mails accounts in python
 """
-import re
 from . import utils
 
 class Account(object):
@@ -16,7 +16,7 @@ class Account(object):
 
 class Mail(object):
     """Mail"""
-    def __init__(self, header, body, attachements=None):
+    def __init__(self, header=None, body=None, attachements=None):
         super(Mail, self).__init__()
         self.header = header
         self.body = body
@@ -38,17 +38,21 @@ class Header(object):
 
 class ImapAccount(Account):
     """An account for IMAP protocol"""
-    def __init__(self, name, password, imap4):
+    def __init__(self, name, imap, folder=u'INBOX'):
         super(ImapAccount, self).__init__(name)
-        self.password = password
-        self.imap4 = imap4
+        self.imap = imap
+        self.folder = folder
+        self._mails = {}
 
     @property
     def mails(self):
-        try:
-            self.imap4.login(self.name, self.password)
-        finally:
-            self.imap4.logout()
+        self.imap.select_folder(self.folder)
+        mails = []
+        for uid in self.imap.search():
+            if uid not in self._mails:
+                self._mails[uid] = ImapMail(uid, self.imap)
+            mails.append(self._mails[uid])
+        return mails
 
     @mails.setter
     def mails(self, value):
@@ -57,28 +61,50 @@ class ImapAccount(Account):
     @property
     def folders(self):
         """Return folders account in a Tree structure"""
-        tree = utils.Tree()
-        try:
-            self.imap4.login(self.name, self.password)
-            typ, data = self.imap4.list()
-        finally:
-            self.imap4.logout()
-        if typ == 'OK':
-            for response in data:
-                (flags, delimiter, mailbox_name) = parse_list_response(response)
-                tree.branch(mailbox_name.split(delimiter))
-        else:
-            raise NotImplementedError("""Response code %r not handled."""
-                    """Of type %s with members:"""
-                    """%s""" % (typ, type(typ), "\n".join(dir(typ))))
-        return tree
+        folders = self.imap.list_folders(self.folder)
 
+class ImapMail(Mail):
+    """A mail lazzy fecthing the IMAP protocol"""
+    def __init__(self, uid, imap):
+        super(ImapMail, self).__init__()
+        self.uid = uid
+        self.imap = imap
+        self._header = None
 
-LIST_RESPONSE_PATTERN = re.compile(
-    r'\((?P<flags>.*?)\) "(?P<delimiter>.*)" (?P<name>.*)')
+    @property
+    def header(self):
+        if not self._header:
+            self._header = ImapHeader(self.uid, self.imap)
+        return self._header
 
-def parse_list_response(line):
-    flags, delimiter, mailbox_name = LIST_RESPONSE_PATTERN.match(
-        line.decode()).groups()
-    mailbox_name = mailbox_name.strip('"')
-    return (flags, delimiter, mailbox_name)
+    @header.setter
+    def header(self, value):
+        pass
+
+class ImapHeader(Header):
+    """Lazzy structure fetching IMAP protocol"""
+    def __init__(self, uid, imap):
+        super(ImapHeader, self).__init__(subject, sender, recievers)
+        self.uid = uid
+        self.imap = imap
+        self._envelope = None
+        self._subject = None
+
+    @property
+    def subject(self):
+        if not self._subject:
+            self._subject ='otot'
+        return self._subject
+
+    @subject.setter
+    def subject(self, value):
+        pass
+
+    @property
+    def sender(self):
+        return "No sender"
+
+    @sender.setter
+    def sender(self, value):
+        pass
+
