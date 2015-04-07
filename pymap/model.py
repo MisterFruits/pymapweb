@@ -2,7 +2,9 @@
 """
 Model for Mails accounts in python
 """
-from . import utils
+import email.header
+import imapclient.response_types
+from collections import defaultdict
 
 class Account(object):
     """Mail account"""
@@ -84,27 +86,34 @@ class ImapMail(Mail):
 class ImapHeader(Header):
     """Lazzy structure fetching IMAP protocol"""
     def __init__(self, uid, imap):
-        super(ImapHeader, self).__init__(subject, sender, recievers)
-        self.uid = uid
-        self.imap = imap
-        self._envelope = None
-        self._subject = None
+        self.envelope = imap.fetch(uid, ['ENVELOPE'])[uid][b'ENVELOPE']
+        subject = decode_header(self.envelope.subject).strip()
+        sender = decode_address(self.envelope.sender[0])
+        super(ImapHeader, self).__init__(subject, sender, None)
 
-    @property
-    def subject(self):
-        if not self._subject:
-            self._subject ='otot'
-        return self._subject
+def decode_header(bytes_input, imap_encoding='us-ascii'):
+    encoded_string = bytes_input.decode(imap_encoding)
+    test = bytes_output, encoding = email.header.decode_header(encoded_string)[0]
+    if encoding:
+        return bytes_output.decode(encoding)
+    return bytes_output
 
-    @subject.setter
-    def subject(self, value):
-        pass
-
-    @property
-    def sender(self):
-        return "No sender"
-
-    @sender.setter
-    def sender(self, value):
-        pass
-
+def decode_address(address):
+    d = defaultdict(None)
+    if address.mailbox:
+        d['mailbox'] = decode_header(address.mailbox)
+    else:
+        d['mailbox'] = None
+    if address.host:
+        d['host'] = decode_header(address.host)
+    else:
+        d['host'] = None
+    if address.name:
+        d['name'] = decode_header(address.name)
+    else:
+        d['name'] = None
+    if address.route:
+        d['route'] = decode_header(address.route)
+    else:
+        d['route'] = None
+    return imapclient.response_types.Address(**d)
